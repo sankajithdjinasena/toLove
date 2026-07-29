@@ -14,8 +14,35 @@
 <!-- Ambient stars -->
 <div class="sky" id="sky" aria-hidden="true"></div>
 
+<!-- ===================== SCENE 0: DATE LOCK ===================== -->
+<section class="gate" id="gate">
+  <div class="gate-card">
+    <p class="gate-eyebrow">a little lock, for a big date</p>
+    <h2 class="gate-title">Do you remember the Our day?</h2>
+    <p class="gate-sub">Select it to unlock your letter</p>
+
+    <div class="gate-selects">
+      <div class="gate-field">
+        <label for="gateDay">Day</label>
+        <select id="gateDay" aria-label="Day"></select>
+      </div>
+      <div class="gate-field">
+        <label for="gateMonth">Month</label>
+        <select id="gateMonth" aria-label="Month"></select>
+      </div>
+      <div class="gate-field">
+        <label for="gateYear">Year</label>
+        <select id="gateYear" aria-label="Year"></select>
+      </div>
+    </div>
+
+    <button class="gate-btn" id="gateBtn">Unlock</button>
+    <p class="gate-msg" id="gateMsg">&nbsp;</p>
+  </div>
+</section>
+
 <!-- ===================== SCENE 1: ENVELOPE ===================== -->
-<section class="stage" id="stage">
+<section class="stage hidden" id="stage">
   <p class="hint" id="hint">tap the seal</p>
   <div class="envelope" id="envelope">
     <div class="envelope-shadow"></div>

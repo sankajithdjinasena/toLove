@@ -56,6 +56,117 @@ body.letter-open{ overflow-y: auto; }
   to{ opacity:1; }
 }
 
+/* ================= SCENE 0: DATE LOCK ================= */
+.gate{
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+  transition: opacity .7s ease, transform .7s ease, visibility 0s linear .7s;
+}
+.gate.hidden{
+  opacity: 0;
+  transform: scale(.94);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.gate-card{
+  width: min(360px, 92vw);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: clamp(28px, 6vw, 40px) clamp(22px, 6vw, 32px);
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,.5), 0 8px 18px rgba(0,0,0,.35);
+}
+
+.gate-eyebrow{
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: .85;
+  margin: 0 0 10px;
+}
+
+.gate-title{
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(22px, 5.5vw, 28px);
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.gate-sub{
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 24px;
+  opacity: .85;
+}
+
+.gate-selects{
+  display:flex;
+  gap: 8px;
+  justify-content:center;
+  margin-bottom: 22px;
+}
+.gate-selects select{
+  font-family: var(--sans);
+  font-size: 14px;
+  padding: 10px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(60,42,30,.25);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+#gateDay{ width: 66px; }
+#gateMonth{ width: 118px; }
+#gateYear{ width: 78px; }
+
+.gate-btn{
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(160deg, #a8425a, #7c1f34);
+  color: var(--paper);
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(124,31,52,.4);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.gate-btn:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(124,31,52,.5); }
+.gate-btn:active{ transform: translateY(0); }
+
+.gate-msg{
+  font-family: var(--hand);
+  font-size: 16px;
+  color: var(--rose);
+  min-height: 22px;
+  margin: 14px 0 0;
+}
+
+.gate-card.shake{
+  animation: gateShake .4s ease;
+}
+@keyframes gateShake{
+  0%,100%{ transform: translateX(0); }
+  20%{ transform: translateX(-8px); }
+  40%{ transform: translateX(7px); }
+  60%{ transform: translateX(-5px); }
+  80%{ transform: translateX(4px); }
+}
+
 /* ================= SCENE 1: ENVELOPE ================= */
 .stage{
   position: fixed;
