@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,600&family=Caveat:wght@500;600;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Ambient stars -->
+<div class="sky" id="sky" aria-hidden="true"></div>
+
+<!-- ===================== SCENE 1: ENVELOPE ===================== -->
+<section class="stage" id="stage">
+  <p class="hint" id="hint">tap the seal</p>
+  <div class="envelope" id="envelope">
+    <div class="envelope-shadow"></div>
+    <div class="flap-back"></div>
+    <div class="paper-peek"></div>
+    <div class="flap-front">
+      <button class="seal" id="seal" aria-label="Open the letter">
+        <span class="seal-crack"></span>
+        <span class="seal-initials">S&nbsp;&amp;&nbsp;S</span>
+      </button>
+    </div>
+    <div class="body-front">
+      <span class="to-line">To P.M. Sanodya V. Jinadasa</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCENE 2: LETTER ===================== -->
+<main class="letter-wrap" id="letterWrap">
+  <article class="letter" id="letter">
+
+    <header class="letter-head">
+      <p class="eyebrow">a small letter, for a big feeling</p>
+      <h1>My dearest, Oshi</h1>
+    </header>
+
+    <div class="letter-body">
+      <p>
+        I don't know exactly how to fold something as big as this into words, but I wanted to
+        try anyway &mdash; because you deserve to hear it, not just feel it.
+      </p>
+
+      <p>
+        Some days you are the reason my ordinary hours turn golden. A grocery run, a boring
+        commute, a rainy Tuesday &mdash; you have this quiet way of making even the smallest moments
+        feel like something worth keeping. I notice it every time. I don't think you know how
+        often.
+      </p>
+
+      <!-- Photo 1 -->
+      <figure class="polaroid tilt-1">
+        <img src="photos/photo1.jpg" alt="A favorite memory" onerror="this.closest('figure').classList.add('img-missing')">
+        <div class="img-fallback">photo&nbsp;1</div>
+        <figcaption>the day everything felt lighter</figcaption>
+      </figure>
+
+      <p>
+        Thank you for the patience you hand me on the days I'm difficult to love, and for
+        laughing with me on the days I'm just difficult. Thank you for being the safest place
+        I know &mdash; softer than any bed, steadier than any plan.
+      </p>
+
+      <!-- Photo 2 -->
+      <figure class="polaroid tilt-2">
+        <img src="photos/photo2.jpg" alt="A favorite memory" onerror="this.closest('figure').classList.add('img-missing')">
+        <div class="img-fallback">photo&nbsp;2</div>
+        <figcaption>you, mid-laugh, unaware I was staring</figcaption>
+      </figure>
+
+      <p>
+        I keep a small, private list in my head of things I love about you, and it keeps
+        growing at the most inconvenient times &mdash; in meetings, in traffic, at 2am when I should
+        be asleep. Today's addition: the way you say my name when you're about to tease me.
+      </p>
+
+      <!-- Photo 3 -->
+      <figure class="polaroid tilt-3">
+        <img src="photos/photo3.jpg" alt="A favorite memory" onerror="this.closest('figure').classList.add('img-missing')">
+        <div class="img-fallback">photo&nbsp;3</div>
+        <figcaption>somewhere we didn't want to leave</figcaption>
+      </figure>
+
+      <p>
+        I'm not writing this to be perfect or poetic. I'm writing it because I wanted you to
+        have proof, something you can come back to on an ordinary day, that says: someone out
+        there thinks about you far more than you'd guess, and counts himself lucky for it.
+      </p>
+
+      <!-- Photo 4 -->
+      <figure class="polaroid tilt-4">
+        <img src="photos/photo4.jpg" alt="A favorite memory" onerror="this.closest('figure').classList.add('img-missing')">
+        <div class="img-fallback">photo&nbsp;4</div>
+        <figcaption>quiet moments, my favorite kind</figcaption>
+      </figure>
+
+      <p>
+        So here's my small promise, folded into this small letter: I will keep choosing you on
+        the easy days and the hard ones, keep learning you like a favorite book I never tire
+        of rereading, and keep making sure you never have to wonder how I feel.
+      </p>
+
+      <!-- Photo 5 -->
+      <figure class="polaroid tilt-5">
+        <img src="photos/photo5.jpg" alt="A favorite memory" onerror="this.closest('figure').classList.add('img-missing')">
+        <div class="img-fallback">photo&nbsp;5</div>
+        <figcaption>and this one, just because I love it</figcaption>
+      </figure>
+
+      <p class="closing">
+        Yours, entirely and without hesitation,
+      </p>
+    </div>
+
+    <footer class="letter-sign">
+      <span class="sign-name">Sankajith D. Jinasena</span>
+      <span class="sign-date" id="todayDate"></span>
+    </footer>
+
+  </article>
+
+  <button class="reseal" id="reseal">seal it again &#10022;</button>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
