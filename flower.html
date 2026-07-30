@@ -81,40 +81,43 @@ html,body{
 
 /* ---------------- flower ---------------- */
 .flower{
+  --fw: clamp(300px, 88vw, 380px);
   position:relative;
-  width: 340px;
-  height: 340px;
-  max-width: 84vw;
-  max-height: 84vw;
+  width: var(--fw);
+  height: var(--fw);
   margin: 0 auto;
 }
 
 /* Each petal is centered on the flower's midpoint, then rotated
    around its own bottom edge (transform-origin: 50% 100%) so it
    fans outward. --angle is set per-petal inline in the HTML.
-   Fixed pixel sizes are used (not percentages) so petal size
-   never depends on how the browser resolves the container's
-   aspect-ratio-derived height for absolutely positioned children. */
+   Sizes are derived from --fw (the flower's own width) via calc(),
+   so petals scale together with the flower on every screen size
+   instead of staying a fixed pixel size while the container shrinks
+   (which is what made them overlap and hard to tap on phones). */
 .petal{
   --angle: 0deg;
   position:absolute;
   top:50%;
   left:50%;
-  width: 110px;
-  height: 155px;
-  margin-top: -155px;
-  margin-left: -55px;
+  width: calc(var(--fw) * 0.38);
+  height: calc(var(--fw) * 0.54);
+  margin-top: calc(var(--fw) * -0.54);
+  margin-left: calc(var(--fw) * -0.19);
   transform-origin: 50% 100%;
   transform: rotate(var(--angle));
   border:none;
   padding:0;
   background:none;
   cursor:pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   z-index:1;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,.4));
   transition: transform .35s cubic-bezier(.3,1.4,.4,1), filter .35s ease;
 }
-.petal:hover{
+.petal:hover,
+.petal:active{
   transform: rotate(var(--angle)) scale(1.08);
   filter: drop-shadow(0 10px 20px rgba(224,189,125,.5));
   z-index:3;
@@ -167,8 +170,8 @@ html,body{
   position:absolute;
   top:50%;
   left:50%;
-  width: 92px;
-  height: 92px;
+  width: calc(var(--fw) * 0.27);
+  height: calc(var(--fw) * 0.27);
   transform: translate(-50%,-50%);
   border-radius:50%;
   background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #8a6a30 100%);
