@@ -117,6 +117,21 @@ body.letter-open{ overflow-y: auto; }
   justify-content:center;
   margin-bottom: 22px;
 }
+.gate-field{
+  display:flex;
+  flex-direction: column;
+  align-items:flex-start;
+  gap: 5px;
+}
+.gate-field label{
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: .7;
+  padding-left: 2px;
+}
 .gate-selects select{
   font-family: var(--sans);
   font-size: 14px;
@@ -508,6 +523,86 @@ body.letter-open{ overflow-y: auto; }
   background: rgba(230,220,180,.55);
   transform: translateX(-50%) rotate(4deg);
   box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+/* ---------- flower link (to flower.html) ---------- */
+.flower-link{
+  display:flex;
+  align-items:center;
+  gap: 16px;
+  width: min(360px, 100%);
+  margin: 8px auto 0;
+  padding: 14px 20px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(224,189,125,.14), rgba(224,189,125,.04));
+  border: 1px solid rgba(224,189,125,.4);
+  box-shadow: 0 10px 24px rgba(0,0,0,.3);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease, background .3s ease;
+}
+.flower-link:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(0,0,0,.4), 0 0 22px rgba(224,189,125,.35);
+  border-color: var(--gold-bright);
+  background: linear-gradient(135deg, rgba(224,189,125,.24), rgba(224,189,125,.06));
+}
+
+.flower-link-icon{
+  position:relative;
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+.fl-petal{
+  position:absolute;
+  top:50%; left:50%;
+  width: 11px;
+  height: 16px;
+  margin-top: -16px;
+  margin-left: -5.5px;
+  transform-origin: 50% 100%;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  background: linear-gradient(160deg, var(--gold-bright), var(--gold));
+  transition: transform .45s cubic-bezier(.3,1.5,.4,1);
+}
+.fl-p1{ transform: rotate(0deg); }
+.fl-p2{ transform: rotate(90deg); }
+.fl-p3{ transform: rotate(180deg); }
+.fl-p4{ transform: rotate(270deg); }
+
+.fl-center{
+  position:absolute;
+  top:50%; left:50%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%,-50%);
+  border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #fff5e0, var(--gold-bright));
+  box-shadow: 0 0 6px rgba(224,189,125,.7);
+}
+
+.flower-link:hover .fl-p1{ transform: rotate(-14deg) scale(1.15); }
+.flower-link:hover .fl-p2{ transform: rotate(104deg) scale(1.15); }
+.flower-link:hover .fl-p3{ transform: rotate(194deg) scale(1.15); }
+.flower-link:hover .fl-p4{ transform: rotate(284deg) scale(1.15); }
+
+.flower-link-text{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.flower-link-title{
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--gold-bright);
+}
+.flower-link-sub{
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .05em;
+  color: rgba(246,239,224,.7);
 }
 
 /* ---------- reseal button ---------- */

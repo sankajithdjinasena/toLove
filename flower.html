@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flower of Memories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,600&family=Caveat:wght@500;600;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2228%22>%E2%9D%A4%EF%B8%8F</text></svg>">
+<style>
+:root{
+  --indigo-deep:  #150f28;
+  --indigo:       #1e1638;
+  --plum:         #2d1b4e;
+  --paper:        #f6efe0;
+  --ink:          #3c2a1e;
+  --ink-soft:     #5b473a;
+  --gold:         #c9a15a;
+  --gold-bright:  #e0bd7d;
+  --rose:         #d98fa3;
+  --serif: 'Playfair Display', Georgia, serif;
+  --hand:  'Caveat', cursive;
+  --sans:  'Jost', sans-serif;
+}
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0;
+  min-height:100%;
+  background: radial-gradient(ellipse at 50% 0%, var(--plum) 0%, var(--indigo) 45%, var(--indigo-deep) 100%);
+  color: var(--paper);
+  font-family: var(--sans);
+  overflow-x:hidden;
+}
+
+.page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding: 60px 20px;
+}
+
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color: var(--gold-bright);
+  opacity:.85;
+  margin: 0 0 6px;
+}
+.title{
+  font-family: var(--serif);
+  font-style:italic;
+  font-weight:600;
+  font-size: clamp(26px, 5vw, 38px);
+  margin: 0 0 56px;
+  text-align:center;
+}
+
+/* ---------------- flower ---------------- */
+.flower{
+  position:relative;
+  width: 340px;
+  height: 340px;
+  max-width: 84vw;
+  max-height: 84vw;
+  margin: 0 auto;
+}
+
+/* Each petal is centered on the flower's midpoint, then rotated
+   around its own bottom edge (transform-origin: 50% 100%) so it
+   fans outward. --angle is set per-petal inline in the HTML.
+   Fixed pixel sizes are used (not percentages) so petal size
+   never depends on how the browser resolves the container's
+   aspect-ratio-derived height for absolutely positioned children. */
+.petal{
+  --angle: 0deg;
+  position:absolute;
+  top:50%;
+  left:50%;
+  width: 110px;
+  height: 155px;
+  margin-top: -155px;
+  margin-left: -55px;
+  transform-origin: 50% 100%;
+  transform: rotate(var(--angle));
+  border:none;
+  padding:0;
+  background:none;
+  cursor:pointer;
+  z-index:1;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.4));
+  transition: transform .35s cubic-bezier(.3,1.4,.4,1), filter .35s ease;
+}
+.petal:hover{
+  transform: rotate(var(--angle)) scale(1.08);
+  filter: drop-shadow(0 10px 20px rgba(224,189,125,.5));
+  z-index:3;
+}
+
+/* teardrop petal shape, rotates together with .petal */
+.petal-shape{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  overflow:hidden;
+  border: 2px solid rgba(230,210,170,.55);
+  background: #2a1f3d;
+  transition: border-color .35s ease;
+}
+.petal:hover .petal-shape{
+  border-color: var(--gold-bright);
+}
+
+/* image wrapper counter-rotates so photos stay upright,
+   scaled up so it fully covers the teardrop after rotating */
+.petal-img{
+  position:absolute;
+  inset: -25%;
+  transform: rotate(calc(var(--angle) * -1));
+}
+.petal-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.petal-fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background: repeating-linear-gradient(45deg, #3a2c52, #3a2c52 10px, #33254a 10px, #33254a 20px);
+  color: var(--gold-bright);
+  font-family: var(--hand);
+  font-size: 18px;
+}
+.petal.img-missing .petal-img{ display:none; }
+.petal.img-missing .petal-fallback{ display:flex; }
+
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width: 92px;
+  height: 92px;
+  transform: translate(-50%,-50%);
+  border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #8a6a30 100%);
+  box-shadow: 0 0 30px rgba(224,189,125,.55), inset 0 3px 6px rgba(255,255,255,.4), inset 0 -4px 8px rgba(0,0,0,.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2;
+}
+.center span{
+  font-family: var(--serif);
+  font-style:italic;
+  font-weight:700;
+  color: #3c2a1e;
+  font-size: clamp(13px, 2.6vw, 16px);
+}
+
+.hint{
+  margin-top: 40px;
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color: var(--gold-bright);
+  opacity:.75;
+}
+
+/* ---------------- magical overlay ---------------- */
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index: 50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+  opacity:0;
+  visibility:hidden;
+  background: radial-gradient(ellipse at 50% 50%, rgba(45,27,78,.6), rgba(10,7,20,.94));
+  transition: opacity .5s ease, visibility 0s linear .5s;
+}
+.overlay.visible{
+  opacity:1;
+  visibility:visible;
+  transition: opacity .5s ease, visibility 0s linear 0s;
+}
+
+.overlay-card{
+  position:relative;
+  width: min(440px, 92vw);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 18px 18px 26px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.6);
+  transform: scale(.4) rotate(-8deg);
+  opacity:0;
+  transition: transform .6s cubic-bezier(.2,1.4,.3,1), opacity .5s ease;
+}
+.overlay.visible .overlay-card{
+  transform: scale(1) rotate(0deg);
+  opacity:1;
+}
+
+.overlay-card img{
+  width:100%;
+  aspect-ratio: 1 / 1;
+  object-fit:cover;
+  border-radius: 3px;
+  display:block;
+  background:#e5ddc9;
+}
+.overlay-card .caption{
+  font-family: var(--hand);
+  font-size: 20px;
+  text-align:center;
+  margin: 14px 4px 0;
+  color: var(--ink-soft);
+}
+
+.overlay-close{
+  position:absolute;
+  top:-14px;
+  right:-14px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:none;
+  background: var(--gold-bright);
+  color:#3c2a1e;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(0,0,0,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* sparkle particles */
+.sparkle{
+  position:fixed;
+  z-index: 60;
+  pointer-events:none;
+  border-radius:50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px 2px rgba(224,189,125,.8);
+  animation: sparkle-fly ease-out forwards;
+}
+@keyframes sparkle-fly{
+  0%{ opacity:1; transform: translate(0,0) scale(1); }
+  100%{ opacity:0; transform: translate(var(--dx), var(--dy)) scale(0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="eyebrow">a flower, made of moments</p>
+  <h1 class="title">Petals of Us</h1>
+
+  <div class="flower" id="flower">
+    <button class="petal" style="--angle:0deg"   data-src="photos/photo1.jpg" data-caption="the day everything felt lighter">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo1.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">1</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:45deg"  data-src="photos/photo2.jpg" data-caption="you, mid-laugh, unaware I was staring">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo2.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">2</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:90deg"  data-src="photos/photo3.jpg" data-caption="somewhere we didn't want to leave">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo3.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">3</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:135deg" data-src="photos/photo4.jpg" data-caption="quiet moments, my favorite kind">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo4.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">4</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:180deg" data-src="photos/photo5.jpg" data-caption="and this one, just because I love it">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo5.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">5</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:225deg" data-src="photos/photo6.jpg" data-caption="a moment worth keeping">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo6.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">6</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:270deg" data-src="photos/photo7.jpg" data-caption="just us, being us">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo7.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">7</span>
+      </span>
+    </button>
+    <button class="petal" style="--angle:315deg" data-src="photos/photo8.jpg" data-caption="a favorite, always">
+      <span class="petal-shape">
+        <span class="petal-img"><img src="photos/photo8.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
+        <span class="petal-fallback">8</span>
+      </span>
+    </button>
+
+    <div class="center"><span>Us</span></div>
+  </div>
+
+  <p class="hint">tap a petal to open the memory</p>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="overlay-card" id="overlayCard">
+    <button class="overlay-close" id="overlayClose" aria-label="Close">&times;</button>
+    <img id="overlayImg" src="" alt="">
+    <p class="caption" id="overlayCaption"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const overlay = document.getElementById('overlay');
+  const overlayImg = document.getElementById('overlayImg');
+  const overlayCaption = document.getElementById('overlayCaption');
+  const overlayClose = document.getElementById('overlayClose');
+  const petals = document.querySelectorAll('.petal');
+
+  function spawnSparkles(x, y){
+    const count = 14;
+    for(let i = 0; i < count; i++){
+      const s = document.createElement('span');
+      s.className = 'sparkle';
+      const size = 3 + Math.random() * 5;
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist = 60 + Math.random() * 90;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      s.style.left = x + 'px';
+      s.style.top = y + 'px';
+      s.style.setProperty('--dx', dx + 'px');
+      s.style.setProperty('--dy', dy + 'px');
+      s.style.animationDuration = (0.6 + Math.random() * 0.5) + 's';
+      document.body.appendChild(s);
+      s.addEventListener('animationend', () => s.remove());
+    }
+  }
+
+  petals.forEach(petal => {
+    petal.addEventListener('click', () => {
+      const rect = petal.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      spawnSparkles(cx, cy);
+
+      overlayImg.src = petal.dataset.src;
+      overlayCaption.textContent = petal.dataset.caption || '';
+      overlay.classList.add('visible');
+    });
+  });
+
+  function closeOverlay(){
+    overlay.classList.remove('visible');
+  }
+  overlayClose.addEventListener('click', closeOverlay);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeOverlay();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeOverlay();
+  });
+})();
+</script>
+
+</body>
+</html>
