@@ -51,6 +51,25 @@ html,body{
   opacity:.85;
   margin: 0 0 6px;
 }
+
+.back-link{
+  align-self: center;
+  margin: 40px 0 0;
+  padding: 9px 18px;
+  border: 1px solid rgba(224,189,125,.4);
+  border-radius: 999px;
+  color: var(--gold-bright);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: .06em;
+  transition: transform .25s ease, background .25s ease, border-color .25s ease;
+}
+.back-link:hover{
+  transform: translateX(-3px);
+  background: rgba(224,189,125,.1);
+  border-color: var(--gold-bright);
+}
 .title{
   font-family: var(--serif);
   font-style:italic;
@@ -168,7 +187,7 @@ html,body{
 }
 
 .hint{
-  margin-top: 40px;
+  margin-top: 80px;
   font-size:12px;
   letter-spacing:.12em;
   text-transform:uppercase;
@@ -327,6 +346,8 @@ html,body{
   </div>
 
   <p class="hint">tap a petal to open the memory</p>
+
+  <a class="back-link" href="index.html">&larr; back to the envelope</a>
 </div>
 
 <div class="overlay" id="overlay">

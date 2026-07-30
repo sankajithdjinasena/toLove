@@ -108,12 +108,14 @@
     setTimeout(() => {
       stage.classList.add('hidden');
       letterWrap.classList.add('visible');
+      document.body.classList.add('letter-open');
       window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     }, 850);
   }
 
   function closeLetter() {
     letterWrap.classList.remove('visible');
+    document.body.classList.remove('letter-open');
     setTimeout(() => {
       stage.classList.remove('hidden');
       envelope.classList.remove('open');
