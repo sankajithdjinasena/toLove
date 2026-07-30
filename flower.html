@@ -51,6 +51,130 @@ html,body{
   opacity:.85;
   margin: 0 0 6px;
 }
+.title{
+  font-family: var(--serif);
+  font-style:italic;
+  font-weight:600;
+  font-size: clamp(26px, 5vw, 38px);
+  margin: 0 0 56px;
+  text-align:center;
+}
+
+/* ---------------- flower ---------------- */
+/* New approach: the tappable elements are plain, evenly-spaced
+   circles (easy, uniform touch targets that never overlap). The
+   decorative teardrop "petal" shapes sit behind them, purely for
+   looks, and have pointer-events:none so they never interfere
+   with tapping. Positions are set with a simple translate(dx,dy)
+   pair passed in per item, computed from 8 evenly-spaced angles
+   around the circle -- no rotation-dependent hit areas at all. */
+.flower{
+  --fw: clamp(300px, 88vw, 380px);
+  --r: calc(var(--fw) * 0.34);      /* ring radius for petal centers */
+  position:relative;
+  width: var(--fw);
+  height: var(--fw);
+  margin: 0 auto;
+}
+
+.petal-deco{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width: calc(var(--fw) * 0.22);
+  height: calc(var(--fw) * 0.42);
+  margin-top: calc(var(--fw) * -0.42);
+  margin-left: calc(var(--fw) * -0.11);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--angle));
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background: linear-gradient(160deg, rgba(224,189,125,.22), rgba(224,189,125,.05));
+  border: 1px solid rgba(224,189,125,.25);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.petal{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width: calc(var(--fw) * 0.26);
+  height: calc(var(--fw) * 0.26);
+  margin-top: calc(var(--fw) * -0.13);
+  margin-left: calc(var(--fw) * -0.13);
+  transform: translate(var(--dx), var(--dy));
+  border-radius: 50%;
+  border: 3px solid rgba(230,210,170,.65);
+  overflow: hidden;
+  padding:0;
+  cursor:pointer;
+  background: #2a1f3d;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 2;
+  box-shadow: 0 6px 16px rgba(0,0,0,.45);
+  transition: transform .3s cubic-bezier(.3,1.4,.4,1), border-color .3s ease, box-shadow .3s ease;
+}
+.petal:hover,
+.petal:active{
+  transform: translate(var(--dx), var(--dy)) scale(1.1);
+  border-color: var(--gold-bright);
+  box-shadow: 0 10px 22px rgba(224,189,125,.45);
+  z-index: 3;
+}
+
+.petal img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.petal-fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background: repeating-linear-gradient(45deg, #3a2c52, #3a2c52 10px, #33254a 10px, #33254a 20px);
+  color: var(--gold-bright);
+  font-family: var(--hand);
+  font-size: 18px;
+}
+.petal.img-missing img{ display:none; }
+.petal.img-missing .petal-fallback{ display:flex; }
+
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width: calc(var(--fw) * 0.27);
+  height: calc(var(--fw) * 0.27);
+  transform: translate(-50%,-50%);
+  border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #8a6a30 100%);
+  box-shadow: 0 0 30px rgba(224,189,125,.55), inset 0 3px 6px rgba(255,255,255,.4), inset 0 -4px 8px rgba(0,0,0,.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1;
+}
+.center span{
+  font-family: var(--serif);
+  font-style:italic;
+  font-weight:700;
+  color: #3c2a1e;
+  font-size: clamp(13px, 2.6vw, 16px);
+}
+
+.hint{
+  margin-top: 80px;
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color: var(--gold-bright);
+  opacity:.75;
+}
 
 .back-link{
   align-self: center;
@@ -69,133 +193,6 @@ html,body{
   transform: translateX(-3px);
   background: rgba(224,189,125,.1);
   border-color: var(--gold-bright);
-}
-.title{
-  font-family: var(--serif);
-  font-style:italic;
-  font-weight:600;
-  font-size: clamp(26px, 5vw, 38px);
-  margin: 0 0 56px;
-  text-align:center;
-}
-
-/* ---------------- flower ---------------- */
-.flower{
-  --fw: clamp(300px, 88vw, 380px);
-  position:relative;
-  width: var(--fw);
-  height: var(--fw);
-  margin: 0 auto;
-}
-
-/* Each petal is centered on the flower's midpoint, then rotated
-   around its own bottom edge (transform-origin: 50% 100%) so it
-   fans outward. --angle is set per-petal inline in the HTML.
-   Sizes are derived from --fw (the flower's own width) via calc(),
-   so petals scale together with the flower on every screen size
-   instead of staying a fixed pixel size while the container shrinks
-   (which is what made them overlap and hard to tap on phones). */
-.petal{
-  --angle: 0deg;
-  position:absolute;
-  top:50%;
-  left:50%;
-  width: calc(var(--fw) * 0.38);
-  height: calc(var(--fw) * 0.54);
-  margin-top: calc(var(--fw) * -0.54);
-  margin-left: calc(var(--fw) * -0.19);
-  transform-origin: 50% 100%;
-  transform: rotate(var(--angle));
-  border:none;
-  padding:0;
-  background:none;
-  cursor:pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  z-index:1;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,.4));
-  transition: transform .35s cubic-bezier(.3,1.4,.4,1), filter .35s ease;
-}
-.petal:hover,
-.petal:active{
-  transform: rotate(var(--angle)) scale(1.08);
-  filter: drop-shadow(0 10px 20px rgba(224,189,125,.5));
-  z-index:3;
-}
-
-/* teardrop petal shape, rotates together with .petal */
-.petal-shape{
-  position:relative;
-  width:100%;
-  height:100%;
-  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
-  overflow:hidden;
-  border: 2px solid rgba(230,210,170,.55);
-  background: #2a1f3d;
-  transition: border-color .35s ease;
-}
-.petal:hover .petal-shape{
-  border-color: var(--gold-bright);
-}
-
-/* image wrapper counter-rotates so photos stay upright,
-   scaled up so it fully covers the teardrop after rotating */
-.petal-img{
-  position:absolute;
-  inset: -25%;
-  transform: rotate(calc(var(--angle) * -1));
-}
-.petal-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.petal-fallback{
-  position:absolute;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background: repeating-linear-gradient(45deg, #3a2c52, #3a2c52 10px, #33254a 10px, #33254a 20px);
-  color: var(--gold-bright);
-  font-family: var(--hand);
-  font-size: 18px;
-}
-.petal.img-missing .petal-img{ display:none; }
-.petal.img-missing .petal-fallback{ display:flex; }
-
-.center{
-  position:absolute;
-  top:50%;
-  left:50%;
-  width: calc(var(--fw) * 0.27);
-  height: calc(var(--fw) * 0.27);
-  transform: translate(-50%,-50%);
-  border-radius:50%;
-  background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #8a6a30 100%);
-  box-shadow: 0 0 30px rgba(224,189,125,.55), inset 0 3px 6px rgba(255,255,255,.4), inset 0 -4px 8px rgba(0,0,0,.3);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:2;
-}
-.center span{
-  font-family: var(--serif);
-  font-style:italic;
-  font-weight:700;
-  color: #3c2a1e;
-  font-size: clamp(13px, 2.6vw, 16px);
-}
-
-.hint{
-  margin-top: 80px;
-  font-size:12px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color: var(--gold-bright);
-  opacity:.75;
 }
 
 /* ---------------- magical overlay ---------------- */
@@ -281,7 +278,7 @@ html,body{
 }
 @keyframes sparkle-fly{
   0%{ opacity:1; transform: translate(0,0) scale(1); }
-  100%{ opacity:0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  100%{ opacity:0; transform: translate(var(--dx-fly), var(--dy-fly)) scale(0); }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -296,53 +293,48 @@ html,body{
   <h1 class="title">Petals of Us</h1>
 
   <div class="flower" id="flower">
-    <button class="petal" style="--angle:0deg"   data-src="photos/photo1.jpg" data-caption="the day everything felt lighter">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo1.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">1</span>
-      </span>
+    <!-- decorative petal shapes, purely visual, not clickable -->
+    <div class="petal-deco" style="--angle:0deg"></div>
+    <div class="petal-deco" style="--angle:45deg"></div>
+    <div class="petal-deco" style="--angle:90deg"></div>
+    <div class="petal-deco" style="--angle:135deg"></div>
+    <div class="petal-deco" style="--angle:180deg"></div>
+    <div class="petal-deco" style="--angle:225deg"></div>
+    <div class="petal-deco" style="--angle:270deg"></div>
+    <div class="petal-deco" style="--angle:315deg"></div>
+
+    <!-- actual tappable photo circles, evenly spaced, never overlapping -->
+    <button class="petal" style="--dx:calc(var(--r) * 0);      --dy:calc(var(--r) * -1);"     data-src="photos/photo1.jpg" data-caption="the day everything felt lighter">
+      <img src="photos/photo1.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">1</span>
     </button>
-    <button class="petal" style="--angle:45deg"  data-src="photos/photo2.jpg" data-caption="you, mid-laugh, unaware I was staring">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo2.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">2</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * 0.7071); --dy:calc(var(--r) * -0.7071);" data-src="photos/photo2.jpg" data-caption="you, mid-laugh, unaware I was staring">
+      <img src="photos/photo2.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">2</span>
     </button>
-    <button class="petal" style="--angle:90deg"  data-src="photos/photo3.jpg" data-caption="somewhere we didn't want to leave">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo3.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">3</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * 1);      --dy:calc(var(--r) * 0);"       data-src="photos/photo3.jpg" data-caption="somewhere we didn't want to leave">
+      <img src="photos/photo3.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">3</span>
     </button>
-    <button class="petal" style="--angle:135deg" data-src="photos/photo4.jpg" data-caption="quiet moments, my favorite kind">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo4.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">4</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * 0.7071); --dy:calc(var(--r) * 0.7071);"  data-src="photos/photo4.jpg" data-caption="quiet moments, my favorite kind">
+      <img src="photos/photo4.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">4</span>
     </button>
-    <button class="petal" style="--angle:180deg" data-src="photos/photo5.jpg" data-caption="and this one, just because I love it">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo5.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">5</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * 0);      --dy:calc(var(--r) * 1);"       data-src="photos/photo5.jpg" data-caption="and this one, just because I love it">
+      <img src="photos/photo5.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">5</span>
     </button>
-    <button class="petal" style="--angle:225deg" data-src="photos/photo6.jpg" data-caption="a moment worth keeping">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo6.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">6</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * -0.7071);--dy:calc(var(--r) * 0.7071);"  data-src="photos/photo6.jpg" data-caption="a moment worth keeping">
+      <img src="photos/photo6.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">6</span>
     </button>
-    <button class="petal" style="--angle:270deg" data-src="photos/photo7.jpg" data-caption="just us, being us">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo7.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">7</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * -1);     --dy:calc(var(--r) * 0);"       data-src="photos/photo7.jpg" data-caption="just us, being us">
+      <img src="photos/photo7.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">7</span>
     </button>
-    <button class="petal" style="--angle:315deg" data-src="photos/photo8.jpg" data-caption="a favorite, always">
-      <span class="petal-shape">
-        <span class="petal-img"><img src="photos/photo8.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')"></span>
-        <span class="petal-fallback">8</span>
-      </span>
+    <button class="petal" style="--dx:calc(var(--r) * -0.7071);--dy:calc(var(--r) * -0.7071);" data-src="photos/photo8.jpg" data-caption="a favorite, always">
+      <img src="photos/photo8.jpg" alt="" onerror="this.closest('.petal').classList.add('img-missing')">
+      <span class="petal-fallback">8</span>
     </button>
 
     <div class="center"><span>Us</span></div>
@@ -383,8 +375,8 @@ html,body{
       s.style.height = size + 'px';
       s.style.left = x + 'px';
       s.style.top = y + 'px';
-      s.style.setProperty('--dx', dx + 'px');
-      s.style.setProperty('--dy', dy + 'px');
+      s.style.setProperty('--dx-fly', dx + 'px');
+      s.style.setProperty('--dy-fly', dy + 'px');
       s.style.animationDuration = (0.6 + Math.random() * 0.5) + 's';
       document.body.appendChild(s);
       s.addEventListener('animationend', () => s.remove());
